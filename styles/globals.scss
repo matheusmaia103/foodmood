@@ -1,0 +1,57 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+*{
+    font-family: 'Poppins';
+}
+
+*:focus {
+  outline: none;
+}
+
+header {
+  background-image: url('/masterChef.svg');
+  background-size: 30%;
+  background-repeat: no-repeat;
+  background-position: right center;
+  /*box-shadow: 0px 2px 19px 3px rgba(0, 0, 0, 0.6);*/
+}
+
+h4{
+    
+  background-image: linear-gradient(
+    360deg,
+    rgb(0, 0, 0) -10%,
+    rgba(255, 255, 255, 0) 30%
+  );
+  background-size: cover;
+  position: relative;
+  color: white;
+}
+
+.swiper-container .swiper-slide {
+  width: auto;
+}
+
+.swiper-slide {
+  text-align: center;
+  font-size: 18px;
+  background: #fff;
+
+  /* Center slide text vertically */
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  height: 200px !important;
+  max-width: 200px;
+}
+
+.swiper-button-next, .swiper-button-prev{
+    color:#f43f5e !important;
+}
+
+.swipper-pagination {
+  margin-top: 40px;
+}
