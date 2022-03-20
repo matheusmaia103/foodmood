@@ -6,6 +6,14 @@
     font-family: 'Poppins';
 }
 
+ol{
+  list-style-type: auto;
+}
+
+body{
+  background-color: #e9feef;
+}
+
 *:focus {
   outline: none;
 }
@@ -44,8 +52,8 @@ h4{
   display: -ms-flexbox;
   display: -webkit-flex;
   display: flex;
-  height: 200px !important;
-  max-width: 200px;
+  height: 250px !important;
+  max-width: 250px;
 }
 
 .swiper-button-next, .swiper-button-prev{
@@ -54,4 +62,12 @@ h4{
 
 .swipper-pagination {
   margin-top: 40px;
+}
+
+.css-1h9z7r5-MuiButtonBase-root-MuiTab-root.Mui-selected{
+  color:#15803d !important;
+}
+
+.css-1aquho2-MuiTabs-indicator{
+  background-color: #15803d;
 }
