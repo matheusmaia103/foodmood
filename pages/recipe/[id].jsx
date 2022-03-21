@@ -1,38 +1,21 @@
 import React, { useState } from 'react'
 import Head from 'next/head'
 import Image from 'next/image'
-import { useRouter } from 'next/router'
 import {
   AccessTimeRounded,
-  Person,
   FavoriteRounded,
-  ThumbUpAltRounded,
+  HealthAndSafetyRounded,
 } from '@mui/icons-material'
-import Tabs from '@mui/material/Tabs'
 import Tab from '@mui/material/Tab'
 import TabContext from '@mui/lab/TabContext'
 import TabPanel from '@mui/lab/TabPanel'
 import TabList from '@mui/lab/TabList'
 import Box from '@mui/material/Box'
-import { getSimilar } from '../pages/api/spoonacular'
-import Menu from '../components/Menus'
+import Menu from '../../components/Menus'
 
-/*
-
-      <section className="container flex flex-col items-center justify-center px-10 py-10">
-        <h2 className="mb-3 w-full text-4xl font-medium">Ingredients:</h2>
-        <div className="flex w-full flex-col items-center justify-start">
-          {recipe.extendedIngredients.map((ingredient) => (
-            <p className="mb-text-lg font-normal text-slate-400 ">
-              {ingredient.original}
-            </p>
-          ))}
-        </div>
-      </section>
-      */
 
 const RecipePage = ({ recipe, similars }) => {
-  console.log(similars)
+  console.log(recipe)
   const [value, setValue] = useState('1')
 
   const handleChange = (event, newValue) => {
@@ -51,29 +34,38 @@ const RecipePage = ({ recipe, similars }) => {
           className="m-5 rounded-lg"
           src={recipe.image}
           width="400px"
-          height="300px"
+          height="250px"
+          objectFit="contain"
           alt="Recipe image"
         />
-        <div className="items-left mt-5 flex flex-col md:ml-5">
-          <h1 className="mb-3 w-full text-4xl font-medium">{recipe.title}</h1>
-          <p className="mb-3 flex w-full items-center text-2xl  font-normal text-slate-500 ">
+        <div className="mt-5 flex flex-col items-center md:ml-5">
+          <h1 className="mb-3 w-full text-center text-4xl font-medium">
+            {recipe.title}
+          </h1>
+          <p className="mb-3 flex w-full items-center justify-center text-center text-2xl  font-normal ">
             <AccessTimeRounded />
-            Ready in {recipe.readyInMinutes} minutes
+            Ready in{' '}
+            {recipe.readyInMinutes > 120
+              ? `${(recipe.readyInMinutes % 60).toFixed()} hours`
+              : `${recipe.readyInMinutes} minutes`}{' '}
           </p>
-          <a
-            className="mb-3 flex w-full items-center text-2xl  font-normal text-slate-500 "
-            href={recipe.sourceUrl}
-          >
-            <Person />
-            {recipe.sourceName}
-          </a>
+          <p className="mb-3 flex w-full items-center justify-around text-2xl  font-normal text-rose-500 ">
+            <div className=" flex items-center" title="Health score">
+              <HealthAndSafetyRounded />
+              {recipe.healthScore}
+            </div>
+            <div className=" flex items-center" title="Likes">
+              <FavoriteRounded />
+              {recipe.aggregateLikes}
+            </div>
+          </p>
         </div>
       </section>
 
       <section className="container flex flex-col items-center justify-center px-10 py-10 sm:flex-col">
-        <h2 className="mb-3 w-full text-4xl font-medium">Description:</h2>
+        <h2 className="mb-3 w-full text-lg font-normal">Description:</h2>
         <div
-          className="mb-1 text-lg  font-normal "
+          className="mb-1 text-base  font-normal "
           dangerouslySetInnerHTML={{ __html: recipe.summary }}
         ></div>
       </section>
@@ -90,9 +82,13 @@ const RecipePage = ({ recipe, similars }) => {
               </TabList>
             </Box>
             <TabPanel value="1">
-              {recipe.extendedIngredients.map((ingredient) => (
-                <p className="mb-text-lg font-normal" key={ingredient.id}>{ingredient.original}</p>
-              ))}
+              <ul>
+                {recipe.extendedIngredients.map((ingredient) => (
+                  <li className="text-base font-normal" key={ingredient.id}>
+                    {ingredient.original}
+                  </li>
+                ))}
+              </ul>
             </TabPanel>
             <TabPanel value="2">
               <div
@@ -108,7 +104,6 @@ const RecipePage = ({ recipe, similars }) => {
 }
 
 export default RecipePage
-//api.spoonacular.com/recipes/641063/information?includeNutritiosn=false&apiKey=c09e8f38556b4770bebb889afdcaae32
 
 export async function getServerSideProps(context) {
   const  {params} = context
@@ -123,7 +118,6 @@ export async function getServerSideProps(context) {
     `${process.env.NEXT_PUBLIC_SEARCH_URL}&tags=${recipe.diets}&number=10`
   )
   const similars = await similarResponse.json()
-  //const similars = await getSimilar(recipe.id)
   return {
     props: { recipe, similars },
   }

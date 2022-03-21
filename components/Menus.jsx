@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { CircularProgress } from '@mui/material'
 // Import Swiper React components
 import { Swiper, SwiperSlide } from 'swiper/react'
 
@@ -12,7 +11,7 @@ import 'swiper/css/navigation'
 import 'swiper/css/bundle'
 
 // import required modules
-import { Pagination, Navigation } from 'swiper'
+import { Navigation } from 'swiper'
 
 const Menu = ({ title, recipes }) => {
   //const [width, setWidth] = useState(0)
@@ -37,13 +36,13 @@ const Menu = ({ title, recipes }) => {
               <h4 className="z-10 flex h-full w-full flex-row items-end justify-center text-center text-base font-semibold">
                 {recipe.title}
               </h4>
-              </Link>
-              <Image
-                className="absolute z-0"
-                src={recipe.image}
-                layout="fill"
-                objectFit="cover"
-              />
+            </Link>
+            <Image
+              className="absolute z-0"
+              src={recipe.image}
+              layout="fill"
+              objectFit="cover"
+            />
           </SwiperSlide>
         ))}
       </Swiper>
