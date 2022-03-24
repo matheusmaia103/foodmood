@@ -50,14 +50,14 @@ const RecipePage = ({ recipe, similars }) => {
               : `${recipe.readyInMinutes} minutes`}{' '}
           </p>
           <p className="mb-3 flex w-full items-center justify-around text-2xl  font-normal text-rose-500 ">
-            <div className=" flex items-center" title="Health score">
+            <span className=" flex items-center" title="Health score">
               <HealthAndSafetyRounded />
               {recipe.healthScore}
-            </div>
-            <div className=" flex items-center" title="Likes">
+            </span>
+            <span className=" flex items-center" title="Likes">
               <FavoriteRounded />
               {recipe.aggregateLikes}
-            </div>
+            </span>
           </p>
         </div>
       </section>
@@ -115,7 +115,7 @@ export async function getServerSideProps(context) {
   const recipe = await response.json()
 
   const similarResponse = await fetch(
-    `${process.env.NEXT_PUBLIC_SEARCH_URL}&tags=${recipe.diets}&number=10`
+    `${process.env.NEXT_PUBLIC_SEARCH_URL}&query=${recipe.title.split(' ')[0]}&tags=${recipe.diets}&number=10`
   )
   const similars = await similarResponse.json()
   return {

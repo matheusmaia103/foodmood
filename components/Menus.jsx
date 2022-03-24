@@ -31,10 +31,15 @@ const Menu = ({ title, recipes }) => {
         className="mySwiper"
       >
         {recipes.map((recipe) => (
-          <SwiperSlide className="swiper-slide item  flex cursor-pointer flex-row items-end justify-end overflow-hidden rounded-lg">
-            <Link href={`/${recipe.id}`} passHref>
-              <h4 className="z-10 flex h-full w-full flex-row items-end justify-center text-center text-base font-semibold">
-                {recipe.title}
+          <SwiperSlide key={recipe.title} className="swiper-slide item  flex cursor-pointer flex-row items-end justify-end overflow-hidden rounded-lg">
+            <Link href={`/recipe/${recipe.id}`} passHref>
+              <h4 
+                className=" z-10 flex h-full w-full flex-row items-end justify-center text-center text-sm font-normal"
+                >
+
+                {recipe.title.split(' ').length > 4
+                  ? recipe.title.split(' ').slice(0, 4).join(' ').concat('...')
+                  : recipe.title}
               </h4>
             </Link>
             <Image
