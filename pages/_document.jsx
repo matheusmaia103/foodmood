@@ -30,6 +30,9 @@ export default function Document() {
           rel="stylesheet"
           crossOrigin="true"
         />
+        <meta name="theme-color" content="#15803d" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="#15803d" />
+        <meta name="msapplication-navbutton-color" content="#15803d" />
       </Head>
       <body>
         <Main />

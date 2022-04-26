@@ -2,128 +2,104 @@ import { useRef, useState, useEffect } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
 import Image from 'next/image'
-import {
-  SearchRounded,
-  LunchDiningRounded,
-  LocalPizzaRounded,
-  LocalBarRounded,
-  HealthAndSafetyRounded,
-} from '@mui/icons-material'
-import { CircularProgress } from '@mui/material'
+import { Autocomplete, TextField } from '@mui/material'
 
-const SearchPage = ({staticData}) => {
-  const [value, setValue] = useState('Steak')
-  const [query, setQuery] = useState('steak')
-  const [recipes, setRecipes] = useState(staticData.results)
-  const [title, setTitle] = useState(query)
-  const handleChange = (e) => {
-    setValue(e.target.value)
-  }
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    setQuery(value)
-  }
-  const listTag = useRef(null)
-  useEffect(async () => {
-    setRecipes([])
-    setTitle(`Searching for ${query}`)
-    
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_SEARCH_URL}&query=${query}&number=15`
-    )
-    const data = await response.json()
-    setRecipes(data.results)
-    console.log(recipes)
-    recipes.length > 0
-      ? setTitle(`Found ${recipes.length} recipes for `)
-      : setTitle(`No recipes found for `)
-  }, [query])
+import { CloseRounded, SearchRounded } from '@mui/icons-material'
+import { Button } from '@mui/material'
+import { CircularProgress, IconButton, Paper } from '@mui/material'
+
+const top100Films = [
+{ title: 'The Shawshank Redemption', year: 1994 },
+{ title: "It's a Wonderful Life", year: 1946 },
+{ title: 'Life Is Beautiful', year: 1997 },
+{ title: 'The Usual Suspects', year: 1995 },
+{ title: 'Léon: The Professional', year: 1994 },
+{ title: 'Spirited Away', year: 2001 },
+{ title: 'Saving Private Ryan', year: 1998 },
+{ title: 'Once Upon a Time in the West', year: 1968 },
+{ title: 'American History X', year: 1998 },
+{ title: 'Interstellar', year: 2014 },
+{ title: 'Casablanca', year: 1942 },
+{ title: 'City Lights', year: 1931 },
+{ title: 'Psycho', year: 1960 },
+{ title: 'The Green Mile', year: 1999 },
+{ title: 'The Intouchables', year: 2011 },
+{ title: 'Modern Times', year: 1936 },
+{ title: 'Raiders of the Lost Ark', year: 1981 },
+{ title: 'Rear Window', year: 1954 },
+{ title: 'The Pianist', year: 2002 },
+{ title: 'The Departed', year: 2006 },
+{ title: 'Terminator 2: Judgment Day', year: 1991 },
+{ title: 'Back to the Future', year: 1985 },
+{ title: 'Whiplash', year: 2014 },
+{ title: 'Gladiator', year: 2000 },
+{ title: 'Memento', year: 2000 },
+{ title: 'The Prestige', year: 2006 },
+{ title: 'The Lion King', year: 1994 },
+{ title: 'Apocalypse Now', year: 1979 },
+{ title: 'Alien', year: 1979 },
+{ title: 'Sunset Boulevard', year: 1950 },
+{
+  title: 'Dr. Strangelove or: How I Learned to Stop Worrying and Love the Bomb',
+  year: 1964,
+},
+{ title: 'The Great Dictator', year: 1940 },
+{ title: 'Cinema Paradiso', year: 1988 },
+{ title: 'The Lives of Others', year: 2006 },
+{ title: 'Grave of the Fireflies', year: 1988 },
+{ title: 'Paths of Glory', year: 1957 },
+{ title: 'Django Unchained', year: 2012 },
+{ title: 'The Shining', year: 1980 },
+{ title: 'WALL·E', year: 2008 },
+{ title: 'American Beauty', year: 1999 },
+{ title: 'The Dark Knight Rises', year: 2012 },
+{ title: 'Princess Mononoke', year: 1997 },
+{ title: 'Aliens', year: 1986 },
+{ title: 'Oldboy', year: 2003 },
+{ title: 'Once Upon a Time in America', year: 1984 },
+{ title: 'Witness for the Prosecution', year: 1957 },
+{ title: 'Das Boot', year: 1981 },
+{ title: 'Citizen Kane', year: 1941 },
+{ title: 'North by Northwest', year: 1959 },
+{ title: 'Vertigo', year: 1958 },
+{
+  title: 'Star Wars: Episode VI - Return of the Jedi',
+  year: 1983,
+}]
+const SearchPage = () => {
   return (
-    <article className="flex w-full flex-col items-center justify-center  py-3 px-5">
-      <Head>
-        <title>Search recipes</title>
-      </Head>
-      <header className="container relative col-span-12  mb-4  w-full  px-10 py-10 md:max-w-4xl md:rounded-lg">
-        <h1 className="mb-3 w-full text-center text-6xl font-medium">
-          Food<span className="text-green-700">Mood</span>
-        </h1>
-        <form
-          className="relative flex flex-col md:flex-row"
-          onSubmit={handleSubmit}
-        >
-          <label className="z-10 mb-4 text-lg md:w-3/4">
-            <h2 className="w-full text-2xl font-normal">Search now</h2>
-            <input
-              className="mt-2 inline-block w-4/6 rounded-lg border-2  border-green-700 bg-transparent py-1 px-4 md:w-1/2"
-              type="text"
-              value={value}
-              onChange={handleChange}
-            />
-            <button className="ml-2 inline-block  h-10 w-10 rounded-full  bg-gradient-to-r from-green-700 to-green-600 text-white ">
-              <SearchRounded />
-            </button>
-          </label>
-        </form>
-      </header>
-
-      <main className="container max-w-4xl rounded-lg bg-white bg-white px-10 py-5">
-        <h3 className="mb-5 block w-full text-lg font-semibold">
-          {title} <span className="text-rose-500">{query}</span>
-        </h3>
-        {title.split(' ')[0] === 'Found' ? (
-          <ul
-            ref={listTag}
-            className="grid w-full list-none grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
-          >
-            {recipes.map((recipe) => (
-              <li
-                key={recipe.id}
-                className="item relative col-span-1 m-2 flex cursor-pointer flex-row items-end justify-end overflow-hidden rounded-lg"
-              >
-                <Link href={`/recipe/${recipe.id}`} passHref>
-                  <h4
-                    title={recipe.title}
-                    className=" z-10 flex h-full w-full flex-row items-end justify-center text-center text-sm font-normal"
-                  >
-                    {recipe.title.split(' ').length > 4
-                      ? recipe.title
-                          .split(' ')
-                          .slice(0, 4)
-                          .join(' ')
-                          .concat('...')
-                      : recipe.title}
-                  </h4>
-                </Link>
-                <Image
-                  className="absolute z-0"
-                  src={recipe.image}
-                  layout="fill"
-                  objectFit="cover"
-                />
-              </li>
-            ))}
-          </ul>
-        ) : title.split(' ')[0] === 'Searching' ? (
-          <div className="flex w-full items-center justify-center text-rose-500">
-            <CircularProgress color="inherit" />
-          </div>
-        ) : (
-          ''
-        )}
-      </main>
-    </article>
+    <main className="flex min-h-screen w-full items-center justify-center bg-gradient-to-b from-rose-100 to-rose-200">
+      <form action="" className="w-2/6">
+        <Autocomplete
+          id="search-input"
+          freeSolo
+          options={top100Films.map((option) => option.title)}
+          renderInput={(params) => (
+            <TextField {...params} label="Search now!" />
+          )}
+        />
+{
+  /*
+  
+        <TextField
+          label="Search now!"
+          variant="outlined"
+          color="primary"
+          value={value}
+          onChange={(e) => handleChange(e)}
+          InputProps={{
+            endAdornment: (
+              <IconButton size="small" onClick={(e) => handleClear}>
+                <CloseRounded />
+              </IconButton>
+            ),
+          }}
+        />
+        */
+}
+      </form>
+    </main>
   )
 }
 
 export default SearchPage
-
-export async function getStaticProps() {
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_SEARCH_URL}&query=steak&number=15`
-  )
-  const staticData = await response.json()
-  return {
-    props: { staticData },
-    revalidate: 86400,
-  }
-}

@@ -12,13 +12,24 @@ import 'swiper/css/bundle'
 
 // import required modules
 import { Navigation } from 'swiper'
+import { Box, Divider, Typography } from '@mui/material'
+import { Tooltip } from '@mui/material'
+import Card from './Card'
 
 const Menu = ({ title, recipes }) => {
-  //const [width, setWidth] = useState(0)
-  //useEffect(() => setWidth(window.screen.height), [window.screen.height])
+  const handleError = err =>{
+    console.log(err);
+  }
   return (
-    <section className="container relative my-0 w-full  px-10 py-10 md:w-11/12 ">
-      <h3 className="mb-4 text-2xl font-bold">{title}</h3>
+    <Box
+      className="container relative my-0 w-full  px-10 py-10 md:w-11/12 "
+      component="section"
+    >
+      <Divider textAlign="left" className="w-full">
+        <Typography variant="h5" component="h2" >
+          {title}
+        </Typography>
+      </Divider>
 
       <Swiper
         slidesPerView={'auto'}
@@ -28,30 +39,19 @@ const Menu = ({ title, recipes }) => {
         loopFillGroupWithBlank={true}
         navigation={true}
         modules={[Navigation]}
-        className="mySwiper"
+        className="mySwiper mt-5"
       >
         {recipes.map((recipe) => (
-          <SwiperSlide key={recipe.title} className="swiper-slide item  flex cursor-pointer flex-row items-end justify-end overflow-hidden rounded-lg">
-            <Link href={`/recipe/${recipe.id}`} passHref>
-              <h4 
-                className=" z-10 flex h-full w-full flex-row items-end justify-center text-center text-sm font-normal"
-                >
 
-                {recipe.title.split(' ').length > 4
-                  ? recipe.title.split(' ').slice(0, 4).join(' ').concat('...')
-                  : recipe.title}
-              </h4>
-            </Link>
-            <Image
-              className="absolute z-0"
-              src={recipe.image}
-              layout="fill"
-              objectFit="cover"
-            />
+          <SwiperSlide
+            key={recipe.title}
+            className="swiper-slide item  flex cursor-pointer flex-row items-end justify-end overflow-hidden rounded-lg"
+          >
+            <Card recipe={recipe} />
           </SwiperSlide>
         ))}
       </Swiper>
-    </section>
+    </Box>
   )
 }
 

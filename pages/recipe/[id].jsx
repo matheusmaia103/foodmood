@@ -1,8 +1,11 @@
 import React, { useState } from 'react'
+import { useRouter } from 'next/router'
 import Head from 'next/head'
 import Image from 'next/image'
+import Link from 'next/link'
 import {
   AccessTimeRounded,
+  ArrowBackRounded,
   FavoriteRounded,
   HealthAndSafetyRounded,
 } from '@mui/icons-material'
@@ -12,9 +15,13 @@ import TabPanel from '@mui/lab/TabPanel'
 import TabList from '@mui/lab/TabList'
 import Box from '@mui/material/Box'
 import Menu from '../../components/Menus'
+import { Divider, IconButton, Tooltip, Typography } from '@mui/material'
+import { HomeRounded } from '@mui/icons-material'
+
 
 
 const RecipePage = ({ recipe, similars }) => {
+  const router = useRouter()
   console.log(recipe)
   const [value, setValue] = useState('1')
 
@@ -28,8 +35,25 @@ const RecipePage = ({ recipe, similars }) => {
         <meta name="description" content={recipe.summary} />
         <meta name="keywords" content={recipe.diets} />
       </Head>
+      <div className="container w-full px-10">
+        <Tooltip title="Back">
+          <IconButton
+            onClick={() => router.back()}
+            color="secondary"
+          >
+            <ArrowBackRounded />
+          </IconButton>
+        </Tooltip>
+        <Link href="/" passHref>
+          <Tooltip title="Home page">
+            <IconButton color="secondary">
+              <HomeRounded />
+            </IconButton>
+          </Tooltip>
+        </Link>
+      </div>
 
-      <section className="container flex w-full flex-col items-center justify-evenly px-10 py-10 sm:flex-col md:flex-row md:flex-row">
+      <section className="container flex  w-full flex-col items-center justify-evenly px-5 py-10 sm:flex-col md:flex-row md:flex-row">
         <Image
           className="m-5 rounded-lg"
           src={recipe.image}
@@ -50,20 +74,30 @@ const RecipePage = ({ recipe, similars }) => {
               : `${recipe.readyInMinutes} minutes`}{' '}
           </p>
           <p className="mb-3 flex w-full items-center justify-around text-2xl  font-normal text-rose-500 ">
-            <span className=" flex items-center" title="Health score">
-              <HealthAndSafetyRounded />
-              {recipe.healthScore}
-            </span>
-            <span className=" flex items-center" title="Likes">
-              <FavoriteRounded />
-              {recipe.aggregateLikes}
-            </span>
+            
+            <Tooltip title="Health score">
+              <IconButton color="secondary">
+                <HealthAndSafetyRounded />
+                {recipe.healthScore}
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Likes">
+              <IconButton color="secondary">
+                <FavoriteRounded />
+                {recipe.aggregateLikes}
+              </IconButton>
+            </Tooltip>
           </p>
         </div>
       </section>
 
       <section className="container flex flex-col items-center justify-center px-10 py-10 sm:flex-col">
-        <h2 className="mb-3 w-full text-lg font-normal">Description:</h2>
+        <Divider textAlign="left" className="w-full">
+          <Typography variant="h4" component="h2" className="px-2">
+            Description
+          </Typography>
+        </Divider>
+        <br />
         <div
           className="mb-1 text-base  font-normal "
           dangerouslySetInnerHTML={{ __html: recipe.summary }}
@@ -74,6 +108,8 @@ const RecipePage = ({ recipe, similars }) => {
           <TabContext value={value}>
             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
               <TabList
+                textColor="primary"
+                indicatorColor="primary"
                 onChange={handleChange}
                 aria-label="lab API tabs example"
               >
