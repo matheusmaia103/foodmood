@@ -29,7 +29,7 @@ const RecipePage = ({ recipe, similars }) => {
     setValue(newValue)
   }
   return (
-    <article className="flex min-h-screen w-full flex-col items-center justify-center py-2">
+    <article className="bg-gradient-to-b from-green-100 to-white flex min-h-screen w-full flex-col items-center justify-center py-2">
       <Head>
         <title>{recipe.title}</title>
         <meta name="description" content={recipe.summary} />
@@ -39,14 +39,14 @@ const RecipePage = ({ recipe, similars }) => {
         <Tooltip title="Back">
           <IconButton
             onClick={() => router.back()}
-            color="secondary"
+            color="primary"
           >
             <ArrowBackRounded />
           </IconButton>
         </Tooltip>
         <Link href="/" passHref>
           <Tooltip title="Home page">
-            <IconButton color="secondary">
+            <IconButton color="primary">
               <HomeRounded />
             </IconButton>
           </Tooltip>
