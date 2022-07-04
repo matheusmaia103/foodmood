@@ -13,33 +13,31 @@ import {
   IconButton,
   Paper,
 } from '@mui/material'
-import {
-  TextField
-} from '@mui/material'
+import { TextField } from '@mui/material'
 import InputAdornment from '@mui/material/InputAdornment'
 import Card from '../components/Card'
 
 const Home = ({ recipes }) => {
   const [value, setValue] = useState('')
   const [query, setQuery] = useState('')
-  const [data, setData] = useState([])
-  const [length, setLength] = useState(0)
+  const [data, setData] = useState([{}])
+  const [length, setLength] = useState(data.length)
   const [title, setTitle] = useState('')
   const handleChange = (e) => {
     setValue(e.target.value)
   }
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault()
     setQuery(value)
   }
-  const handleClear = e => {
+  const handleClear = (e) => {
     setQuery('')
     setData('')
     setValue('')
   }
 
   useEffect(async () => {
-    if(query === '') return
+    if (query === '') return
     setData([])
     setTitle(`Searching for ${query}`)
 
@@ -47,11 +45,13 @@ const Home = ({ recipes }) => {
       `${process.env.NEXT_PUBLIC_SEARCH_URL}&query=${query}&number=15`
     )
     const result = await response.json()
-    setData( result.results)
-    setLength(result.results.length)
+    console.log(result);
+    setData(await result.results)
+    setLength(await result.number)
+    console.log(data)
 
     data.length > 0
-      ? setTitle(`Found ${length} recipes for `)
+      ? setTitle(`Found ${result.totalResults} recipes for `)
       : setTitle(`No recipes found for `)
   }, [query])
 
@@ -70,43 +70,40 @@ const Home = ({ recipes }) => {
         <h1 className="mb-3 w-full text-center text-6xl font-medium">
           Food<span className="text-green-700">Mood</span>
         </h1>
+        <label className="z-10 mb-4 text-lg md:w-3/4">
+          <h2 className="w-full text-2xl font-normal">
+            Find Delicious Recipes
+          </h2>
+          <br />
+        </label>
         <form
-          className="relative flex flex-col md:flex-row"
           onSubmit={handleSubmit}
+          className="flex w-full items-center md:w-4/6"
         >
-          <label className="z-10 mb-4 text-lg md:w-3/4">
-            <h2 className="w-full text-2xl font-normal">
-              Find Delicious Recipes
-            </h2>
-            <br />
-
-            <section className="block flex w-full items-center md:w-4/6">
-              <Autocomplete
-                id="search-input"
-                freeSolo
-                fullWidth
-                options={options.map((option) => option.title)}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label="Search now!"
-                    value={value}
-                    onChange={(e) => handleChange(e)}
-                  />
-                )}
-              />
-              <IconButton
-                variant="contained"
-                color="primary"
-                type="submit"
-                size="large"
-                onClick={(e) => handleSubmit(e)}
-                className="mx-2 bg-gradient-to-r from-green-700 via-green-600 to-green-500 text-white"
-              >
-                <SearchRounded />
-              </IconButton>
-            </section>
-          </label>
+          <TextField
+            label="Search now!"
+            variant="outlined"
+            color="primary"
+            value={value}
+            onChange={(e) => handleChange(e)}
+            InputProps={{
+              endAdornment: (
+                <IconButton size="small" onClick={(e) => handleClear}>
+                  <CloseRounded />
+                </IconButton>
+              ),
+            }}
+          />
+          <IconButton
+            variant="contained"
+            color="inherit"
+            type="submit"
+            size="large"
+            onClick={(e) => handleSubmit(e)}
+            className="mx-2 bg-gradient-to-r from-green-700 via-green-600 to-green-500 text-white"
+          >
+            <SearchRounded />
+          </IconButton>
         </form>
       </header>
       {query ? (

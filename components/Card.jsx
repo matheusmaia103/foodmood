@@ -4,6 +4,9 @@ import Image from 'next/image'
 import { Tooltip } from '@material-ui/core'
 
 function Card({recipe}) {
+  const handleError = e => {
+    console.error(e)
+  }
   return (
       <>
       
@@ -18,9 +21,11 @@ function Card({recipe}) {
           </Link>
       <Image
         className="absolute z-0"
+        alt={`${recipe.title} image`}
         src={recipe.image}
         layout="fill"
         objectFit="cover"
+        onError={(e) => handleError(e)}
         />
         </>
   )

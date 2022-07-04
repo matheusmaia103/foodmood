@@ -2,7 +2,7 @@ import { useRef, useState, useEffect } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
 import Image from 'next/image'
-import { Autocomplete, TextField } from '@mui/material'
+import { Autocomplete, Box, TextField } from '@mui/material'
 
 import { CloseRounded, SearchRounded } from '@mui/icons-material'
 import { Button } from '@mui/material'
@@ -67,19 +67,39 @@ const top100Films = [
   year: 1983,
 }]
 const SearchPage = () => {
+  const [value, setValue] = useState('')
+  const [query, setQuery] = useState('')
+
+  const handleSubmit = (e) =>{
+    e.preventDefault()
+    setQuery(value)
+    alert('submited:   '+ value)
+  }
   return (
-    <main className="flex min-h-screen w-full items-center justify-center bg-gradient-to-b from-rose-100 to-rose-200">
-      <form action="" className="w-2/6">
+    <main className="flex min-h-screen w-full flex-col items-center justify-center bg-gradient-to-b from-rose-100 to-rose-200">
+      <h1>value === {value}</h1> <br />
+      <h2>query === {query}</h2> <br />
+      <form action="" className="w-2/6" onSubmit={(e) => handleSubmit(e)}>
         <Autocomplete
           id="search-input"
+          getOptionLabel={(top100Films) => top100Films.title}
+          renderOption={(props, top100Films) => (
+            <Box component="li" {...props}>
+              {top100Films.title}
+            </Box>
+          )}
           freeSolo
           options={top100Films.map((option) => option.title)}
           renderInput={(params) => (
-            <TextField {...params} label="Search now!" />
+            <TextField
+              {...params}
+              value={value}
+              onChange={(e) => setValue(e.target.value)}
+              label="Search now!"
+            />
           )}
         />
-{
-  /*
+        {/*
   
         <TextField
           label="Search now!"
@@ -95,8 +115,7 @@ const SearchPage = () => {
             ),
           }}
         />
-        */
-}
+        */}
       </form>
     </main>
   )

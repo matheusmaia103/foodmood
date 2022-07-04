@@ -47,7 +47,7 @@ const Menu = ({ title, recipes }) => {
             key={recipe.title}
             className="swiper-slide item  flex cursor-pointer flex-row items-end justify-end overflow-hidden rounded-lg"
           >
-            <Card recipe={recipe} />
+            <Card recipe={recipe} key={recipe.id + 1} />
           </SwiperSlide>
         ))}
       </Swiper>
