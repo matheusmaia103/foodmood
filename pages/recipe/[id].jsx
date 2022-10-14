@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
 import Image from 'next/image'
@@ -20,16 +20,32 @@ import { HomeRounded } from '@mui/icons-material'
 
 
 
-const RecipePage = ({ recipe, similars }) => {
+const RecipePage =  ({ recipe }) => {
+  console.clear()
   const router = useRouter()
-  console.log(recipe)
   const [value, setValue] = useState('1')
-
+  const [similars, setSimilars] = useState([])
+  
   const handleChange = (event, newValue) => {
     setValue(newValue)
   }
+  
+  
+    useEffect(async () => {
+      const similarResponse = await fetch(
+        `${process.env.NEXT_PUBLIC_SEARCH_URL}&query=${
+          recipe.title.split(' ')[0]
+        }&tags=${recipe.diets}&number=4`
+      )
+      const response = await similarResponse.json()
+      setSimilars(response.results)
+    }, [recipe])
+
+  console.log(recipe)
+  console.log(similars)
+
   return (
-    <article className="bg-gradient-to-b from-green-100 to-white flex min-h-screen w-full flex-col items-center justify-center py-2">
+    <article className="flex min-h-screen w-full flex-col items-center justify-center bg-gradient-to-b from-green-100 to-white py-2">
       <Head>
         <title>{recipe.title}</title>
         <meta name="description" content={recipe.summary} />
@@ -37,10 +53,7 @@ const RecipePage = ({ recipe, similars }) => {
       </Head>
       <div className="container w-full px-10">
         <Tooltip title="Back">
-          <IconButton
-            onClick={() => router.back()}
-            color="primary"
-          >
+          <IconButton onClick={() => router.back()} color="primary">
             <ArrowBackRounded />
           </IconButton>
         </Tooltip>
@@ -74,7 +87,6 @@ const RecipePage = ({ recipe, similars }) => {
               : `${recipe.readyInMinutes} minutes`}{' '}
           </p>
           <p className="mb-3 flex w-full items-center justify-around text-2xl  font-normal text-rose-500 ">
-            
             <Tooltip title="Health score">
               <IconButton color="secondary">
                 <HealthAndSafetyRounded />
@@ -134,7 +146,7 @@ const RecipePage = ({ recipe, similars }) => {
           </TabContext>
         </Box>
       </section>
-      <Menu title="Similar recipes" recipes={similars.results} />
+      <Menu title="Similar recipes" recipes={similars} />
     </article>
   )
 }
@@ -142,19 +154,15 @@ const RecipePage = ({ recipe, similars }) => {
 export default RecipePage
 
 export async function getServerSideProps(context) {
-  const  {params} = context
-  const {id} = params
+  const { params } = context
+  const { id } = params
 
   const response = await fetch(
     `https://api.spoonacular.com/recipes/${id}/information?includeNutrition=false&apiKey=${process.env.NEXT_PUBLIC_API_KEY}`
   )
   const recipe = await response.json()
-
-  const similarResponse = await fetch(
-    `${process.env.NEXT_PUBLIC_SEARCH_URL}&query=${recipe.title.split(' ')[0]}&tags=${recipe.diets}&number=10`
-  )
-  const similars = await similarResponse.json()
+  console.log(recipe);
   return {
-    props: { recipe, similars },
+    props: { recipe },
   }
 }

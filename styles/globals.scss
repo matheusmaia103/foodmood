@@ -19,6 +19,10 @@ body {
   //background-color: #e9feef;
 }
 
+svg{
+  pointer-events: none!important;
+}
+
 *:focus {
   outline: none;
 }

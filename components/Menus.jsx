@@ -17,9 +17,8 @@ import { Tooltip } from '@mui/material'
 import Card from './Card'
 
 const Menu = ({ title, recipes }) => {
-  const handleError = err =>{
-    console.log(err);
-  }
+  if (recipes.length === 0) return ''
+  
   return (
     <Box
       className="container relative my-0 w-full  px-10 py-10 md:w-11/12 "

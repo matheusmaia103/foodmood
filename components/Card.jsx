@@ -7,6 +7,11 @@ function Card({recipe}) {
   const handleError = e => {
     console.error(e)
   }
+
+  const imageCheck = (img) => {
+    if(img) return img
+    else return '/404.webp'
+  }
   return (
       <>
       
@@ -22,7 +27,7 @@ function Card({recipe}) {
       <Image
         className="absolute z-0"
         alt={`${recipe.title} image`}
-        src={recipe.image}
+        src={imageCheck(recipe.image)}
         layout="fill"
         objectFit="cover"
         onError={(e) => handleError(e)}

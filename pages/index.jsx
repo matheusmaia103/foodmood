@@ -1,12 +1,8 @@
 import { useState, useEffect } from 'react'
 import Head from 'next/head'
-import Link from 'next/link'
-import Image from 'next/image'
-import Header from '../components/Header'
 import Menu from '../components/Menus'
 import { getRecipes } from './api/spoonacular'
 import { CloseRounded, SearchRounded } from '@mui/icons-material'
-import { Button } from '@mui/material'
 import {
   Autocomplete,
   CircularProgress,
@@ -18,6 +14,9 @@ import InputAdornment from '@mui/material/InputAdornment'
 import Card from '../components/Card'
 
 const Home = ({ recipes }) => {
+  console.clear()
+  console.log(recipes)
+  const { random, vegan, vegetarian } = recipes
   const [value, setValue] = useState('')
   const [query, setQuery] = useState('')
   const [data, setData] = useState([{}])
@@ -30,43 +29,45 @@ const Home = ({ recipes }) => {
     e.preventDefault()
     setQuery(value)
   }
-  const handleClear = (e) => {
+  const handleClear = () => {
     setQuery('')
     setData('')
     setValue('')
   }
 
   useEffect(async () => {
-    if (query === '') return
-    setData([])
+    if (query === '') {
+      handleClear()
+    }
     setTitle(`Searching for ${query}`)
 
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_SEARCH_URL}&query=${query}&number=15`
+      `${process.env.NEXT_PUBLIC_SEARCH_URL}&query=${query}&number=12`
     )
     const result = await response.json()
-    console.log(result);
-    setData(await result.results)
-    setLength(await result.number)
-    console.log(data)
-
-    data.length > 0
-      ? setTitle(`Found ${result.totalResults} recipes for `)
-      : setTitle(`No recipes found for `)
+    const recipes = await result.results
+    setData(recipes)    
   }, [query])
+  
+  useEffect(() => {
+    data.length > 0
+      ? setTitle(`Found ${data.length} recipes for `)
+      : setTitle(`No recipes found for `)
+  }, [data])
 
-  const { random, vegan, vegetarian } = recipes
-  const RecipesData = vegan.recipes
-  const options = [{ title: 'egg' }, { title: 'chicken' }, { title: 'boiled' }]
+  useEffect(() => {
+    console.log(query + '=>')
+    console.log(data);
+  }, [data])
 
   return (
-    <div className="flex min-h-screen w-full flex-col items-center justify-center py-5 pb-2">
+    <>
       <Head>
         <title>Create Next App</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <header className="container relative col-span-12  mb-4  w-full  px-10 py-10 md:max-w-4xl md:rounded-lg">
+      <header className="w-full px-10 py-10">
         <h1 className="mb-3 w-full text-center text-6xl font-medium">
           Food<span className="text-green-700">Mood</span>
         </h1>
@@ -76,9 +77,10 @@ const Home = ({ recipes }) => {
           </h2>
           <br />
         </label>
+
         <form
           onSubmit={handleSubmit}
-          className="flex w-full items-center md:w-4/6"
+          className=" flex w-full items-center md:w-5/6"
         >
           <TextField
             label="Search now!"
@@ -88,7 +90,7 @@ const Home = ({ recipes }) => {
             onChange={(e) => handleChange(e)}
             InputProps={{
               endAdornment: (
-                <IconButton size="small" onClick={(e) => handleClear}>
+                <IconButton size="small" onClick={handleClear}>
                   <CloseRounded />
                 </IconButton>
               ),
@@ -96,7 +98,7 @@ const Home = ({ recipes }) => {
           />
           <IconButton
             variant="contained"
-            color="inherit"
+            color="primary"
             type="submit"
             size="large"
             onClick={(e) => handleSubmit(e)}
@@ -106,38 +108,40 @@ const Home = ({ recipes }) => {
           </IconButton>
         </form>
       </header>
-      {query ? (
-        <main className="container max-w-4xl rounded-lg bg-white bg-white px-10 py-5">
-          <h3 className="mb-5 block w-full text-lg font-semibold">
-            {title} <span className="text-rose-500">{query}</span>
-          </h3>
-          {title.split(' ')[0] === 'Found' ? (
-            <ul className="grid w-full list-none grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-              {data.map((recipe) => (
-                <li
-                  key={recipe.id}
-                  className="item relative col-span-1 m-2 flex cursor-pointer flex-row items-end justify-end overflow-hidden rounded-lg"
-                >
-                  <Card recipe={recipe} />
-                </li>
-              ))}
-            </ul>
-          ) : title.split(' ')[0] === 'Searching' ? (
-            <div className="flex w-full items-center justify-center text-rose-500">
-              <CircularProgress color="inherit" />
-            </div>
-          ) : (
-            ''
-          )}
-        </main>
-      ) : (
-        <section className="flex  w-full flex-col items-center justify-center  ">
-          <Menu title="Trending" recipes={random.recipes} />
-          <Menu title="Vegan" recipes={vegan.recipes} />
-          <Menu title="Vegetarian" recipes={vegetarian.recipes} />
-        </section>
-      )}
-    </div>
+      <div className="min-h-screen w-full py-5 pb-2">
+        {query ? (
+          <main className="container max-w-4xl rounded-lg bg-white px-10 py-5">
+            <h3 className="mb-5 block w-full text-lg font-semibold">
+              {title} <span className="text-rose-500">{query}</span>
+            </h3>
+            {title.split(' ')[0] === 'Found' ? (
+              <ul className="grid w-full list-none grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+                {data.map((recipe) => (
+                  <li
+                    key={recipe.id}
+                    className="item relative col-span-1 m-2 flex cursor-pointer flex-row items-end justify-end overflow-hidden rounded-lg"
+                  >
+                    <Card recipe={recipe} />
+                  </li>
+                ))}
+              </ul>
+            ) : title.split(' ')[0] === 'Searching' ? (
+              <div className="w-full flex justify-center">
+                <CircularProgress color="secondary" />
+              </div>
+            ) : (
+              ''
+            )}
+          </main>
+        ) : (
+          <section className="flex  w-full flex-col items-center justify-center">
+            <Menu title="Trending" recipes={random.recipes} />
+            <Menu title="Vegan" recipes={vegan.recipes} />
+            <Menu title="Vegetarian" recipes={vegetarian.recipes} />
+          </section>
+        )}
+      </div>
+    </>
   )
 }
 
