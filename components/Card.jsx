@@ -23,15 +23,15 @@ function Card({recipe}) {
               ? recipe.title.split(' ').slice(0, 4).join(' ').concat('...')
               : recipe.title}
           </h4>
-          </Link>
-      <Image
-        className="absolute z-0"
-        alt={`${recipe.title} image`}
-        src={imageCheck(recipe.image)}
-        layout="fill"
-        objectFit="cover"
-        onError={(e) => handleError(e)}
-        />
+       </Link>
+        <Image
+          className="absolute z-0"
+          alt={`${recipe.title} image`}
+          src={imageCheck(recipe.image)}
+          layout="fill"
+          objectFit="cover"
+          onError={(e) => handleError(e)}
+          />
         </>
   )
 }

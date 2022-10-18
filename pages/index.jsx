@@ -63,7 +63,7 @@ const Home = ({ recipes }) => {
   return (
     <>
       <Head>
-        <title>Create Next App</title>
+        <title>FoodMood</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 

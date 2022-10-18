@@ -41,8 +41,10 @@ const RecipePage =  ({ recipe }) => {
       setSimilars(response.results)
     }, [recipe])
 
-  console.log(recipe)
-  console.log(similars)
+    useEffect(() =>{
+      console.log(recipe)
+      console.log(similars)
+    }, [similars])
 
   return (
     <article className="flex min-h-screen w-full flex-col items-center justify-center bg-gradient-to-b from-green-100 to-white py-2">
@@ -161,7 +163,6 @@ export async function getServerSideProps(context) {
     `https://api.spoonacular.com/recipes/${id}/information?includeNutrition=false&apiKey=${process.env.NEXT_PUBLIC_API_KEY}`
   )
   const recipe = await response.json()
-  console.log(recipe);
   return {
     props: { recipe },
   }
