@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import Head from 'next/head'
+import Link from 'next/link'
 import Menu from '../components/Menus'
 import { getRecipes } from './api/spoonacular'
 import { CloseRounded, SearchRounded } from '@mui/icons-material'
@@ -126,7 +127,7 @@ const Home = ({ recipes }) => {
                 ))}
               </ul>
             ) : title.split(' ')[0] === 'Searching' ? (
-              <div className="w-full flex justify-center">
+              <div className="flex w-full justify-center">
                 <CircularProgress color="secondary" />
               </div>
             ) : (

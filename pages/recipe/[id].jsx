@@ -19,6 +19,19 @@ import { Divider, IconButton, Tooltip, Typography } from '@mui/material'
 import { HomeRounded } from '@mui/icons-material'
 
 
+export async function getServerSideProps(context) {
+  const { params } = context
+  const { id } = params
+
+  const response = await fetch(
+    `https://api.spoonacular.com/recipes/${id}/information?includeNutrition=false&apiKey=${process.env.NEXT_PUBLIC_API_KEY}`
+  )
+  const recipe = await response.json()
+  return {
+    props: { recipe },
+  }
+}
+
 
 const RecipePage =  ({ recipe }) => {
   console.clear()
@@ -154,16 +167,3 @@ const RecipePage =  ({ recipe }) => {
 }
 
 export default RecipePage
-
-export async function getServerSideProps(context) {
-  const { params } = context
-  const { id } = params
-
-  const response = await fetch(
-    `https://api.spoonacular.com/recipes/${id}/information?includeNutrition=false&apiKey=${process.env.NEXT_PUBLIC_API_KEY}`
-  )
-  const recipe = await response.json()
-  return {
-    props: { recipe },
-  }
-}
