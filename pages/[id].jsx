@@ -17,16 +17,14 @@ import Box from '@mui/material/Box'
 import Menu from '../components/Menus'
 import { Divider, IconButton, Tooltip, Typography } from '@mui/material'
 import { HomeRounded } from '@mui/icons-material'
+import { getRecipe } from '../pages/api/spoonacular'
 
 
 export async function getServerSideProps(context) {
   const { params } = context
   const { id } = params
-
-  const response = await fetch(
-    `https://api.spoonacular.com/recipes/${id}/information?includeNutrition=false&apiKey=${process.env.NEXT_PUBLIC_API_KEY}`
-    )
-  const recipe = await response.json()
+  
+  const recipe = await getRecipe(id)
   return {
     props: { recipe },
   }
@@ -34,7 +32,6 @@ export async function getServerSideProps(context) {
 
 
 const RecipePage =  ({ recipe }) => {
-  console.clear()
   if(!recipe.title) return (
     <article className="flex min-h-screen flex-col items-center justify-center">
       <Head>

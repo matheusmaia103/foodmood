@@ -26,3 +26,11 @@ export async function getSimilar(id) {
   const recipes = await getRecipes.json()
   return recipes
 }
+
+export async function getRecipe(id) {
+  const response = await fetch(
+    `https://api.spoonacular.com/recipes/${id}/information?includeNutrition=false&apiKey=${process.env.NEXT_PUBLIC_API_KEY}`
+  )
+  const recipe = await response.json()
+  return recipe
+}
