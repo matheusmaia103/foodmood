@@ -10,12 +10,12 @@ function Card({recipe}) {
 
   const imageCheck = (img) => {
     if(img) return img
-    else return '/404.webp'
+    else return '/404.gif'
   }
   return (
       <>
       
-      <Link href={`/recipe/${recipe.id}`} passHref>
+      <Link href={`${recipe.id}`} passHref>
           <h4 
           className=" z-10 flex h-full w-full flex-row items-end justify-center text-center text-sm font-normal"
           >

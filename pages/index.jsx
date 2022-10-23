@@ -15,13 +15,10 @@ import InputAdornment from '@mui/material/InputAdornment'
 import Card from '../components/Card'
 
 const Home = ({ recipes }) => {
-  console.clear()
-  console.log(recipes)
   const { random, vegan, vegetarian } = recipes
   const [value, setValue] = useState('')
   const [query, setQuery] = useState('')
   const [data, setData] = useState([{}])
-  const [length, setLength] = useState(data.length)
   const [title, setTitle] = useState('')
   const handleChange = (e) => {
     setValue(e.target.value)
@@ -36,18 +33,23 @@ const Home = ({ recipes }) => {
     setValue('')
   }
 
+  useEffect(() => {
+  console.log(recipes)
+  },[])
+
   useEffect(async () => {
     if (query === '') {
       handleClear()
     }
-    setTitle(`Searching for ${query}`)
+    setTitle(`Searching for `)
 
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_SEARCH_URL}&query=${query}&number=12`
     )
     const result = await response.json()
     const recipes = await result.results
-    setData(recipes)    
+    setData(recipes)
+    console.clear()
   }, [query])
   
   useEffect(() => {
@@ -57,8 +59,9 @@ const Home = ({ recipes }) => {
   }, [data])
 
   useEffect(() => {
-    console.log(query + '=>')
-    console.log(data);
+    if(query === '') return
+    console.log('Results for ' + query)
+    console.log(data)
   }, [data])
 
   return (

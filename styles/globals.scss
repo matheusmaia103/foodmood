@@ -28,7 +28,7 @@ svg{
 }
 
 header {
-  background-image: url('/masterChef.svg');
+  background-image: url('/masterChefGreen.svg');
   background-size: 30%;
   background-repeat: no-repeat;
   background-position: right center;
@@ -75,6 +75,10 @@ div[role='tooltip'] *{
 
 }
 
+#banner *{
+  background-color: transparent;
+}
+
 .swiper-container .swiper-slide {
   width: auto;
 }
@@ -82,7 +86,10 @@ div[role='tooltip'] *{
 .swiper-slide {
   text-align: center;
   font-size: 18px;
-  background: #fff;
+  background: url('/cooking.gif');
+  background-size: contain;
+  background-position: center;
+  
 
   /* Center slide text vertically */
   display: -webkit-box;

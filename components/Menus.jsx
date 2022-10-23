@@ -17,7 +17,7 @@ import { Tooltip } from '@mui/material'
 import Card from './Card'
 
 const Menu = ({ title, recipes }) => {
-  if (recipes.length === 0) return ''
+  if (recipes.length == 0) return ''
   
   return (
     <Box
