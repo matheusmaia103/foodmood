@@ -15,7 +15,7 @@ function Card({recipe}) {
   return (
       <>
       
-      <Link href={`${/test/recipe.id}`} passHref>
+      <Link href={`${/teste/recipe.id}`} passHref>
           <h4 
           className=" z-10 flex h-full w-full flex-row items-end justify-center text-center text-sm font-normal"
           >
