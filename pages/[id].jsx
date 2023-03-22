@@ -48,6 +48,7 @@ const RecipePage =  ({ recipe }) => {
   )
   const router = useRouter()
   const [value, setValue] = useState('1')
+  let i = 1
   const [similars, setSimilars] = useState([])
   
   const handleChange = (event, newValue) => {
@@ -64,14 +65,14 @@ const RecipePage =  ({ recipe }) => {
       const response = await similarResponse.json()
       const arr = response.results
       setSimilars(arr.filter(similar => similar.id != recipe.id))
-    }, [])
-
-    useEffect(() =>{
       console.log(recipe.title)
       console.log(recipe)
+    }, [])
+    
+    useEffect(() => {
+      if(similars.length === 0) return
       console.log(similars)
     }, [similars])
-
    
   const imageCheck = (img) => {
     if (img) return img
@@ -168,7 +169,7 @@ const RecipePage =  ({ recipe }) => {
             <TabPanel value="1">
               <ul>
                 {recipe.extendedIngredients.map((ingredient) => (
-                  <li className="text-base font-normal" key={ingredient.id}>
+                  <li className="text-base font-normal" key={i++}>
                     {ingredient.original}
                   </li>
                 ))}
