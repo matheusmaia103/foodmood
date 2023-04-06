@@ -13,26 +13,26 @@ function Card({recipe}) {
     else return '/404.gif'
   }
   return (
-      <>
-      
-      <Link href={`${recipe.id}`} passHref>
-          <h4 
+    <>
+      <Link href={`/${recipe.id}`} passHref>
+        <h4
+          title={recipe.title}
           className=" z-10 flex h-full w-full flex-row items-end justify-center text-center text-sm font-normal"
-          >
-            {recipe.title.split(' ').length > 4
-              ? recipe.title.split(' ').slice(0, 4).join(' ').concat('...')
-              : recipe.title}
-          </h4>
-       </Link>
-        <Image
-          className="absolute z-0"
-          alt={`${recipe.title} image`}
-          src={imageCheck(recipe.image)}
-          layout="fill"
-          objectFit="cover"
-          onError={(e) => handleError(e)}
-          />
-        </>
+        >
+          {recipe.title.split(' ').length > 4
+            ? recipe.title.split(' ').slice(0, 4).join(' ').concat('...')
+            : recipe.title}
+        </h4>
+      </Link>
+      <Image
+        className="absolute z-0"
+        alt={`${recipe.title} image`}
+        src={imageCheck(recipe.image)}
+        layout="fill"
+        objectFit="cover"
+        onError={(e) => handleError(e)}
+      />
+    </>
   )
 }
 

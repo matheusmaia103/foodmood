@@ -15,7 +15,13 @@ import InputAdornment from '@mui/material/InputAdornment'
 import Card from '../components/Card'
 
 const Home = ({ recipes }) => {
-  const { random, vegan, vegetarian } = recipes
+  const { steak, chicken, eggs, random } = recipes
+  const trending = [...steak.recipes, ...chicken.recipes, ...eggs.recipes, ...random.recipes]
+  trending.sort((p1, p2) => {
+    if (p1.aggregateLikes < p2.aggregateLikes) return 1
+    if (p1.aggregateLikes > p2.aggregateLikes) return -1
+    return 0
+  })
   const [value, setValue] = useState('')
   const [query, setQuery] = useState('')
   const [data, setData] = useState([{}])
@@ -49,7 +55,6 @@ const Home = ({ recipes }) => {
     const result = await response.json()
     const recipes = await result.results
     setData(recipes)
-    console.clear()
   }, [query])
   
   useEffect(() => {
@@ -139,9 +144,10 @@ const Home = ({ recipes }) => {
           </main>
         ) : (
           <section className="flex  w-full flex-col items-center justify-center">
-            <Menu title="Trending" recipes={random.recipes} />
-            <Menu title="Vegan" recipes={vegan.recipes} />
-            <Menu title="Vegetarian" recipes={vegetarian.recipes} />
+            <Menu title="Most liked recipes" recipes={trending.slice(0, 6)} />
+            <Menu title="Steak" recipes={steak.recipes} />
+            <Menu title="Chicken" recipes={chicken.recipes} />
+            <Menu title="Eggs" recipes={eggs.recipes} />
           </section>
         )}
       </div>

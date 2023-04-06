@@ -1,10 +1,14 @@
 export async function getRecipes() {
-  const vegans = await fetch(
-    `https://api.spoonacular.com/recipes/random?tags=vegan&number=6&apiKey=${process.env.NEXT_PUBLIC_API_KEY}`
+  const steak = await fetch(
+    `https://api.spoonacular.com/recipes/random?tags=steak&number=6&apiKey=${process.env.NEXT_PUBLIC_API_KEY}`
   )
 
-  const vegetarian = await fetch(
-    `https://api.spoonacular.com/recipes/random?tags=vegetarian&number=6&apiKey=${process.env.NEXT_PUBLIC_API_KEY}`
+  const chicken = await fetch(
+    `https://api.spoonacular.com/recipes/random?tags=chicken&number=6&apiKey=${process.env.NEXT_PUBLIC_API_KEY}`
+  )
+
+  const eggs = await fetch(
+    `https://api.spoonacular.com/recipes/random?tags=eggs&number=6&apiKey=${process.env.NEXT_PUBLIC_API_KEY}`
   )
 
   const random = await fetch(
@@ -12,8 +16,9 @@ export async function getRecipes() {
   )
 
   const recipes = {
-    vegan: await vegans.json(),
-    vegetarian: await vegetarian.json(),
+    steak: await steak.json(),
+    chicken: await chicken.json(),
+    eggs: await eggs.json(),
     random: await random.json(),
   }
   return recipes

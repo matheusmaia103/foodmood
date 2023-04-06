@@ -21,8 +21,8 @@ const Menu = ({ title, recipes }) => {
   
   return (
     <Box
-      className="container relative my-0 w-full  px-10 py-10 md:w-11/12 "
-      component="section"
+      className="container relative my-0 w-full  px-10 py-10 md:w-11/12 menu"
+      component="section"      
     >
       <Divider textAlign="left" className="w-full">
         <Typography variant="h5" component="h2" >

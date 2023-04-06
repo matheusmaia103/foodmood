@@ -1,9 +1,9 @@
 import '../styles/globals.scss'
 import { AppProps } from 'next/app'
-import nProgress from 'nprogress'
-import Router from 'next/router'
 import { ThemeProvider } from '@mui/material'
 import { createTheme, Paper } from '@mui/material'
+import nProgress from 'nprogress'
+import Router from 'next/router'
 
 Router.events.on('routeChangeStart', (url) => {
   nProgress.start()

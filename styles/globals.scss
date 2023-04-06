@@ -58,9 +58,35 @@ header form button {
 b {
   color: #15803d;
 }
+
+.menu{
+  width: 100% !important;
+  border-radius: 5px;
+  margin-top: 10px;
+}
+
+.menu:first-child{
+  background-color: #e0e95b;
+  color: rgb(34, 34, 34);
+}
+
+.menu:nth-child(2){
+  background-color: rgb(134, 12, 12);
+  color: white;
+}
+.menu:nth-child(3){
+  background-color: rgb(6, 95, 54);
+  color: white;
+}
+.menu:nth-child(4){
+  background-color: rgb(15, 41, 126);
+  color: white;
+}
 .list-none li {
   list-style: none !important;
 }
+
+
 
 h4 {
   background-image: linear-gradient(360deg, #072211fa -3%, transparent 25%);
