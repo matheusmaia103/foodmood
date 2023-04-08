@@ -17,14 +17,17 @@ import Box from '@mui/material/Box'
 import Menu from '../components/Menus'
 import { Divider, IconButton, Tooltip, Typography } from '@mui/material'
 import { HomeRounded } from '@mui/icons-material'
-import { getRecipe } from '../pages/api/spoonacular'
+//import { getRecipe } from '../pages/api/spoonacular'
 
 
 export async function getServerSideProps(context) {
   const { params } = context
   const { id } = params
   
-  const recipe = await getRecipe(id)
+  const response = await fetch(
+    `https://api.spoonacular.com/recipes/${id}/information?includeNutrition=false&apiKey=${process.env.NEXT_PUBLIC_API_KEY}`
+  )
+  const recipe = await response.json()  
   return {
     props: { recipe },
   }
@@ -60,7 +63,7 @@ const RecipePage =  ({ recipe }) => {
       const similarResponse = await fetch(
         `${process.env.NEXT_PUBLIC_SEARCH_URL}&query=${
           recipe.title.split(' ')[0]
-        }&tags=${recipe.diets}&number=4`
+        }&tags=${recipe.diets}&number=5`
       )
       const response = await similarResponse.json()
       const arr = response.results
@@ -80,7 +83,7 @@ const RecipePage =  ({ recipe }) => {
   } 
 
   return (
-    <article className="flex min-h-screen w-full flex-col items-center justify-center bg-gradient-to-b from-amber-100 to-white py-2">
+    <article className="flex min-h-screen w-full flex-col items-center justify-center bg-gradient-to-b from-emerald-100 to-emerald-50 py-2">
       <Head>
         <title>{recipe.title}</title>
         <meta name="description" content={recipe.summary} />

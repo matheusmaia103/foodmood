@@ -29,7 +29,7 @@ export async function getSimilar(id) {
     `https://api.spoonacular.com/recipes/${id}/similar?apiKey=${process.env.NEXT_PUBLIC_API_KEY}&number=7`
   )
   const recipes = await getRecipes.json()
-  return recipes
+  return recipes.filter((recipe) => recipe.id === id)
 }
 
 export async function getRecipe(id) {
