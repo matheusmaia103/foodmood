@@ -14,6 +14,8 @@ import { TextField } from '@mui/material'
 import InputAdornment from '@mui/material/InputAdornment'
 import Card from '../components/Card'
 
+export let id = []
+
 const Home = ({ recipes }) => {
   const { steak, chicken, eggs, random } = recipes
   const trending = [...steak.recipes, ...chicken.recipes, ...eggs.recipes, ...random.recipes]
