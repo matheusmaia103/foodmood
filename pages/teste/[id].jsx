@@ -136,49 +136,6 @@ const RecipePage = ({ recipe }) => {
         </div>
       </section>
 
-      <section className="container flex flex-col items-center justify-center px-10 py-10 sm:flex-col">
-        <Divider textAlign="left" className="w-full">
-          <Typography variant="h4" component="h2" className="px-2">
-            Description
-          </Typography>
-        </Divider>
-        <br />
-        <div
-          className="mb-1 text-base  font-normal "
-          dangerouslySetInnerHTML={{ __html: recipe.summary }}
-        ></div>
-      </section>
-      <section className="container flex flex-col items-center justify-center px-10 py-10 sm:flex-col">
-        <Box sx={{ width: '100%' }}>
-          <TabContext value={value}>
-            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-              <TabList
-                textColor="primary"
-                indicatorColor="primary"
-                onChange={handleChange}
-                aria-label="lab API tabs example"
-              >
-                <Tab label="Ingredients" value="1" className="" />
-                <Tab label="Instructions" value="2" className="" />
-              </TabList>
-            </Box>
-            <TabPanel value="1">
-              <ul>
-                {recipe.extendedIngredients.map((ingredient) => (
-                  <li className="text-base font-normal" key={ingredient.id}>
-                    {ingredient.original}
-                  </li>
-                ))}
-              </ul>
-            </TabPanel>
-            <TabPanel value="2">
-              <div
-                dangerouslySetInnerHTML={{ __html: recipe.instructions }}
-              ></div>
-            </TabPanel>
-          </TabContext>
-        </Box>
-      </section>
       <Menu title="Similar recipes" recipes={similars} />
     </article>
   )
