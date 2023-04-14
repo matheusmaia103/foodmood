@@ -35,12 +35,14 @@ const RecipePage = () => {
   const [similars, setSimilars] = useState([])
   
   
-  useEffect( async () => {
+  
   const query = router.query
   const id = query.id
-  setRecipe( await getRecipe(id))
+  getRecipe(id)
+  .then(response => {
+    setRecipe(response)
+  })
   console.log(recipe)
-  }, [])
 
   if (!recipe.title)
     return (
