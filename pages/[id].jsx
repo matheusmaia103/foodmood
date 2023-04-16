@@ -17,66 +17,68 @@ import Box from '@mui/material/Box'
 import Menu from '../components/Menus'
 import { Divider, IconButton, Tooltip, Typography } from '@mui/material'
 import { HomeRounded } from '@mui/icons-material'
-import { getRecipe } from '../pages/api/spoonacular'
+import { getRecipe } from './api/spoonacular'
 
-const RecipePage = () => {
+
+export async function getServerSideProps(context) {
+  const { params } = context
+  const { id } = params  
+  const recipe = await getRecipe(id)
+  
+  
+  return {
+    props: { recipe },
+  }
+}
+
+
+const RecipePage =  ({ recipe }) => {
+  if(!recipe.title) return (
+    <article className="flex min-h-screen flex-col items-center justify-center">
+      <Head>
+        <title>Not found</title>
+      </Head>
+      <h1>Sorry, recipe not found!</h1>
+      <Image
+        src="/cooking.gif"
+        objectFit="contain"
+        width="400px"
+        height="250px"
+      />
+    </article>
+  )
   const router = useRouter()
-  const [recipe, setRecipe] = useState({})
-  const query = router.query
-  const id = query.id
-  getRecipe(id)
-  .then((response) => {
-    setRecipe(response)
-  })
-  .then(()=>{
-    console.log(recipe)
-  })
-
-  if (!recipe.title)
-    return (
-      <article className="flex min-h-screen flex-col items-center justify-center">
-        <Head>
-          <title>Not found</title>
-        </Head>
-        <h1>Sorry, recipe not found!</h1>
-        <Image
-          src="/cooking.gif"
-          objectFit="contain"
-          width="400px"
-          height="250px"
-        />
-      </article>
-    )
   const [value, setValue] = useState('1')
   let i = 1
   const [similars, setSimilars] = useState([])
-
+  
   const handleChange = (event, newValue) => {
     setValue(newValue)
   }
-
-  useEffect(async () => {
-    const similarResponse = await fetch(
-      `${process.env.NEXT_PUBLIC_SEARCH_URL}&query=${
-        recipe.title.split(' ')[0]
-      }&tags=${recipe.diets}&number=5`
-    )
-    const response = await similarResponse.json()
-    const arr = response.results
-    setSimilars(arr.filter((similar) => similar.id != recipe.id))
-    console.log(recipe.title)
-    console.log(recipe)
-  }, [])
-
-  useEffect(() => {
-    if (similars.length === 0) return
-    console.log(similars)
-  }, [similars])
-
+  
+  
+    useEffect(async () => {
+      const similarResponse = await fetch(
+        `${process.env.NEXT_PUBLIC_SEARCH_URL}&query=${
+          recipe.title.split(' ')[0]
+        }&tags=${recipe.diets}&number=5`
+      )
+      const response = await similarResponse.json()
+      const arr = response.results
+      setSimilars(arr.filter(similar => similar.id != recipe.id))
+      console.log(recipe.title)
+      console.log(recipe)
+    }, [])
+    
+    useEffect(() => {
+      if(similars.length === 0) return
+      console.log(similars)
+    }, [similars])
+   
   const imageCheck = (img) => {
     if (img) return img
     else return '/404.gif'
-  }
+  } 
 
   return (
     <article className="flex min-h-screen w-full flex-col items-center justify-center bg-gradient-to-b from-emerald-100 to-emerald-50 py-2">
